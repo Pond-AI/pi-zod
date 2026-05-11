@@ -8,10 +8,10 @@
  */
 
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { Type } from "typebox";
+import { z } from "zod";
 
-const ECHO_PARAMS = Type.Object({
-	message: Type.String({ description: "Message to echo" }),
+const ECHO_PARAMS = z.looseObject({
+	message: z.string().describe("Message to echo"),
 });
 
 function normalizeToolName(input: string): string | undefined {

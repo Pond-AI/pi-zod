@@ -1,7 +1,7 @@
 import type { AgentTool } from "@earendil-works/pi-agent-core";
 import { fauxAssistantMessage, fauxThinking, fauxToolCall } from "@earendil-works/pi-ai";
-import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
+import { z } from "zod";
 import { createHarness, type Harness } from "./harness.js";
 
 function normalizeEventOrder(events: Harness["events"]): string[] {
@@ -171,7 +171,7 @@ describe("AgentSession retry and event characterization", () => {
 			name: "echo",
 			label: "Echo",
 			description: "Echo text back",
-			parameters: Type.Object({ text: Type.String() }),
+			parameters: z.looseObject({ text: z.string() }),
 			execute: async (_toolCallId, params) => {
 				const text = typeof params === "object" && params !== null && "text" in params ? String(params.text) : "";
 				toolRuns.push(text);
@@ -260,7 +260,7 @@ describe("AgentSession retry and event characterization", () => {
 			name: "echo",
 			label: "Echo",
 			description: "Echo text back",
-			parameters: Type.Object({ text: Type.String() }),
+			parameters: z.looseObject({ text: z.string() }),
 			execute: async (_toolCallId, params) => {
 				const text = typeof params === "object" && params !== null && "text" in params ? String(params.text) : "";
 				toolRuns.push(text);

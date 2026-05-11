@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 import type { Api, Context, Model, Tool, ToolResultMessage } from "../src/index.js";
 import { complete, getModel } from "../src/index.js";
 import type { StreamOptions } from "../src/types.js";
@@ -40,7 +40,7 @@ async function handleToolWithImageResult<TApi extends Api>(model: Model<TApi>, o
 	const base64Image = imageBuffer.toString("base64");
 
 	// Define a tool that returns only an image (no text)
-	const getImageSchema = Type.Object({});
+	const getImageSchema = z.looseObject({});
 	const getImageTool: Tool<typeof getImageSchema> = {
 		name: "get_circle",
 		description: "Returns a circle image for visualization",
@@ -131,7 +131,7 @@ async function handleToolWithTextAndImageResult<TApi extends Api>(
 	const base64Image = imageBuffer.toString("base64");
 
 	// Define a tool that returns both text and an image
-	const getImageSchema = Type.Object({});
+	const getImageSchema = z.looseObject({});
 	const getImageTool: Tool<typeof getImageSchema> = {
 		name: "get_circle_with_description",
 		description: "Returns a circle image with a text description",

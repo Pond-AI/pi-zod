@@ -1,7 +1,7 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import type { AddressInfo } from "node:net";
-import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 import { streamAnthropic } from "../src/providers/anthropic.js";
 import type { Context, Model, Tool } from "../src/types.js";
 
@@ -29,7 +29,7 @@ function createModel(baseUrl: string, compat?: Model<"anthropic-messages">["comp
 const tool: Tool = {
 	name: "lookup",
 	description: "Look up a value",
-	parameters: Type.Object({ value: Type.String() }),
+	parameters: z.looseObject({ value: z.string() }),
 };
 
 function createContext(tools: Tool[] = [tool]): Context {

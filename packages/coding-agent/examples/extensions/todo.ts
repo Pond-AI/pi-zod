@@ -13,7 +13,7 @@
 import { StringEnum } from "@earendil-works/pi-ai";
 import type { ExtensionAPI, ExtensionContext, Theme } from "@earendil-works/pi-coding-agent";
 import { matchesKey, Text, truncateToWidth } from "@earendil-works/pi-tui";
-import { Type } from "typebox";
+import { z } from "zod";
 
 interface Todo {
 	id: number;
@@ -28,10 +28,10 @@ interface TodoDetails {
 	error?: string;
 }
 
-const TodoParams = Type.Object({
+const TodoParams = z.looseObject({
 	action: StringEnum(["list", "add", "toggle", "clear"] as const),
-	text: Type.Optional(Type.String({ description: "Todo text (for add)" })),
-	id: Type.Optional(Type.Number({ description: "Todo ID (for toggle)" })),
+	text: z.optional(z.string().describe("Todo text (for add)")),
+	id: z.optional(z.number().describe("Todo ID (for toggle)")),
 });
 
 /**

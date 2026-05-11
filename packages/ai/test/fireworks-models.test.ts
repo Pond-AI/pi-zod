@@ -1,7 +1,7 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import type { AddressInfo } from "node:net";
-import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
+import { z } from "zod";
 import { findEnvKeys, getEnvApiKey } from "../src/env-api-keys.js";
 import { getModel } from "../src/models.js";
 import { streamAnthropic } from "../src/providers/anthropic.js";
@@ -74,7 +74,7 @@ interface CapturedRequest {
 const tool: Tool = {
 	name: "lookup",
 	description: "Look up a value",
-	parameters: Type.Object({ value: Type.String() }),
+	parameters: z.looseObject({ value: z.string() }),
 };
 
 function createFireworksModel(compat?: Model<"anthropic-messages">["compat"]): Model<"anthropic-messages"> {

@@ -1,16 +1,16 @@
 import { type ChildProcess, execSync, spawn } from "child_process";
 import { readFileSync } from "fs";
 import { dirname, join } from "path";
-import { Type } from "typebox";
 import { fileURLToPath } from "url";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { z } from "zod";
 import { getModel } from "../src/models.js";
 import { complete, stream } from "../src/stream.js";
 import type { Api, Context, ImageContent, Model, StreamOptions, Tool, ToolResultMessage } from "../src/types.js";
 
 type StreamOptionsWithExtras = StreamOptions & Record<string, unknown>;
 
-import { StringEnum } from "../src/utils/typebox-helpers.js";
+import { StringEnum } from "../src/utils/zod-helpers.js";
 import { hasAzureOpenAICredentials, resolveAzureDeploymentName } from "./azure-utils.js";
 import { hasBedrockCredentials } from "./bedrock-utils.js";
 import { hasCloudflareAiGatewayCredentials, hasCloudflareWorkersAICredentials } from "./cloudflare-utils.js";
@@ -29,10 +29,10 @@ const [anthropicOAuthToken, githubCopilotToken, openaiCodexToken] = oauthTokens;
 
 // Calculator tool definition (same as examples)
 // Note: Using StringEnum helper because Google's API doesn't support anyOf/const patterns
-// that Type.Enum generates. Google requires { type: "string", enum: [...] } format.
-const calculatorSchema = Type.Object({
-	a: Type.Number({ description: "First number" }),
-	b: Type.Number({ description: "Second number" }),
+// that literal unions generate. Google requires { type: "string", enum: [...] } format.
+const calculatorSchema = z.looseObject({
+	a: z.number().describe("First number"),
+	b: z.number().describe("Second number"),
 	operation: StringEnum(["add", "subtract", "multiply", "divide"], {
 		description: "The operation to perform. One of 'add', 'subtract', 'multiply', 'divide'.",
 	}),

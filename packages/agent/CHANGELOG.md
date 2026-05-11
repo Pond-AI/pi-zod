@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Breaking Changes
+
+- Migrated `AgentTool` parameter typing from TypeBox schemas to Zod schemas. Tool `prepareArguments()` and `execute()` now receive `z.output<typeof schema>` values.
+
 ## [0.74.0] - 2026-05-07
 
 ## [0.73.1] - 2026-05-07

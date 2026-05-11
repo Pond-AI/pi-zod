@@ -2,7 +2,7 @@ import type { AgentTool } from "@earendil-works/pi-agent-core";
 import { Box, Container, Spacer, Text } from "@earendil-works/pi-tui";
 import { constants } from "fs";
 import { access as fsAccess, readFile as fsReadFile, writeFile as fsWriteFile } from "fs/promises";
-import { type Static, Type } from "typebox";
+import { z } from "zod";
 import { renderDiff } from "../../modes/interactive/components/diff.js";
 import type { ToolDefinition } from "../extensions/types.js";
 import {
@@ -28,29 +28,25 @@ type EditRenderState = {
 	callComponent?: EditCallRenderComponent;
 };
 
-const replaceEditSchema = Type.Object(
-	{
-		oldText: Type.String({
-			description:
-				"Exact text for one targeted replacement. It must be unique in the original file and must not overlap with any other edits[].oldText in the same call.",
-		}),
-		newText: Type.String({ description: "Replacement text for this targeted edit." }),
-	},
-	{ additionalProperties: false },
-);
+const replaceEditSchema = z.strictObject({
+	oldText: z
+		.string()
+		.describe(
+			"Exact text for one targeted replacement. It must be unique in the original file and must not overlap with any other edits[].oldText in the same call.",
+		),
+	newText: z.string().describe("Replacement text for this targeted edit."),
+});
 
-const editSchema = Type.Object(
-	{
-		path: Type.String({ description: "Path to the file to edit (relative or absolute)" }),
-		edits: Type.Array(replaceEditSchema, {
-			description:
-				"One or more targeted replacements. Each edit is matched against the original file, not incrementally. Do not include overlapping or nested edits. If two changes touch the same block or nearby lines, merge them into one edit instead.",
-		}),
-	},
-	{ additionalProperties: false },
-);
+const editSchema = z.strictObject({
+	path: z.string().describe("Path to the file to edit (relative or absolute)"),
+	edits: z
+		.array(replaceEditSchema)
+		.describe(
+			"One or more targeted replacements. Each edit is matched against the original file, not incrementally. Do not include overlapping or nested edits. If two changes touch the same block or nearby lines, merge them into one edit instead.",
+		),
+});
 
-export type EditToolInput = Static<typeof editSchema>;
+export type EditToolInput = z.output<typeof editSchema>;
 type LegacyEditToolInput = EditToolInput & {
 	oldText?: unknown;
 	newText?: unknown;

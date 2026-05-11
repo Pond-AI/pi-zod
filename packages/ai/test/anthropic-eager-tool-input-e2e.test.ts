@@ -1,5 +1,5 @@
-import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 import { getEnvApiKey } from "../src/env-api-keys.js";
 import { getModels, getProviders } from "../src/models.js";
 import { complete } from "../src/stream.js";
@@ -8,8 +8,8 @@ import { resolveApiKey } from "./oauth.js";
 
 const githubCopilotToken = await resolveApiKey("github-copilot");
 
-const echoToolSchema = Type.Object({
-	value: Type.String({ description: "The value to echo" }),
+const echoToolSchema = z.looseObject({
+	value: z.string().describe("The value to echo"),
 });
 
 const echoTool: Tool<typeof echoToolSchema> = {

@@ -39,7 +39,7 @@ import type {
 	OverlayOptions,
 	TUI,
 } from "@earendil-works/pi-tui";
-import type { Static, TSchema } from "typebox";
+import type * as z from "zod";
 import type { Theme } from "../../modes/interactive/theme/theme.js";
 import type { BashResult } from "../bash-executor.js";
 import type { CompactionPreparation, CompactionResult } from "../compaction/index.js";
@@ -423,7 +423,7 @@ export interface ToolRenderContext<TState = any, TArgs = any> {
 /**
  * Tool definition for registerTool().
  */
-export interface ToolDefinition<TParams extends TSchema = TSchema, TDetails = unknown, TState = any> {
+export interface ToolDefinition<TParams extends z.ZodType = z.ZodType, TDetails = unknown, TState = any> {
 	/** Tool name (used in LLM tool calls) */
 	name: string;
 	/** Human-readable label for UI */
@@ -434,13 +434,13 @@ export interface ToolDefinition<TParams extends TSchema = TSchema, TDetails = un
 	promptSnippet?: string;
 	/** Optional guideline bullets appended to the default system prompt Guidelines section when this tool is active. */
 	promptGuidelines?: string[];
-	/** Parameter schema (TypeBox) */
+	/** Parameter schema (Zod) */
 	parameters: TParams;
 	/** Controls whether ToolExecutionComponent renders the standard colored shell or the tool renders its own framing. */
 	renderShell?: "default" | "self";
 
 	/** Optional compatibility shim to prepare raw tool call arguments before schema validation. Must return an object conforming to TParams. */
-	prepareArguments?: (args: unknown) => Static<TParams>;
+	prepareArguments?: (args: unknown) => z.output<TParams>;
 
 	/**
 	 * Per-tool execution mode override.
@@ -454,21 +454,25 @@ export interface ToolDefinition<TParams extends TSchema = TSchema, TDetails = un
 	/** Execute the tool. */
 	execute(
 		toolCallId: string,
-		params: Static<TParams>,
+		params: z.output<TParams>,
 		signal: AbortSignal | undefined,
 		onUpdate: AgentToolUpdateCallback<TDetails> | undefined,
 		ctx: ExtensionContext,
 	): Promise<AgentToolResult<TDetails>>;
 
 	/** Custom rendering for tool call display */
-	renderCall?: (args: Static<TParams>, theme: Theme, context: ToolRenderContext<TState, Static<TParams>>) => Component;
+	renderCall?: (
+		args: z.output<TParams>,
+		theme: Theme,
+		context: ToolRenderContext<TState, z.output<TParams>>,
+	) => Component;
 
 	/** Custom rendering for tool result display */
 	renderResult?: (
 		result: AgentToolResult<TDetails>,
 		options: ToolRenderResultOptions,
 		theme: Theme,
-		context: ToolRenderContext<TState, Static<TParams>>,
+		context: ToolRenderContext<TState, z.output<TParams>>,
 	) => Component;
 }
 
@@ -481,7 +485,7 @@ type AnyToolDefinition = ToolDefinition<any, any, any>;
  * as `customTools`, where contextual typing would otherwise widen params to
  * `unknown`.
  */
-export function defineTool<TParams extends TSchema, TDetails = unknown, TState = any>(
+export function defineTool<TParams extends z.ZodType, TDetails = unknown, TState = any>(
 	tool: ToolDefinition<TParams, TDetails, TState>,
 ): ToolDefinition<TParams, TDetails, TState> & AnyToolDefinition {
 	return tool as ToolDefinition<TParams, TDetails, TState> & AnyToolDefinition;
@@ -1130,7 +1134,7 @@ export interface ExtensionAPI {
 	// =========================================================================
 
 	/** Register a tool that the LLM can call. */
-	registerTool<TParams extends TSchema = TSchema, TDetails = unknown, TState = any>(
+	registerTool<TParams extends z.ZodType = z.ZodType, TDetails = unknown, TState = any>(
 		tool: ToolDefinition<TParams, TDetails, TState>,
 	): void;
 

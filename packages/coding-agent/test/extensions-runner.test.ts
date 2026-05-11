@@ -291,13 +291,13 @@ describe("ExtensionRunner", () => {
 	describe("tool collection", () => {
 		it("collects tools from multiple extensions", async () => {
 			const toolCode = (name: string) => `
-				import { Type } from "typebox";
+				import { z } from "zod";
 				export default function(pi) {
 					pi.registerTool({
 						name: "${name}",
 						label: "${name}",
 						description: "Test tool",
-						parameters: Type.Object({}),
+						parameters: z.looseObject({}),
 						execute: async () => ({ content: [{ type: "text", text: "ok" }], details: {} }),
 					});
 				}
@@ -315,25 +315,25 @@ describe("ExtensionRunner", () => {
 
 		it("keeps first tool when two extensions register the same name", async () => {
 			const first = `
-				import { Type } from "typebox";
+				import { z } from "zod";
 				export default function(pi) {
 					pi.registerTool({
 						name: "shared",
 						label: "shared",
 						description: "first",
-						parameters: Type.Object({}),
+						parameters: z.looseObject({}),
 						execute: async () => ({ content: [{ type: "text", text: "ok" }], details: {} }),
 					});
 				}
 			`;
 			const second = `
-				import { Type } from "typebox";
+				import { z } from "zod";
 				export default function(pi) {
 					pi.registerTool({
 						name: "shared",
 						label: "shared",
 						description: "second",
-						parameters: Type.Object({}),
+						parameters: z.looseObject({}),
 						execute: async () => ({ content: [{ type: "text", text: "ok" }], details: {} }),
 					});
 				}

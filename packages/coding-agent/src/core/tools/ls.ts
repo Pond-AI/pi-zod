@@ -2,7 +2,7 @@ import type { AgentTool } from "@earendil-works/pi-agent-core";
 import { Text } from "@earendil-works/pi-tui";
 import { existsSync, readdirSync, statSync } from "fs";
 import nodePath from "path";
-import { type Static, Type } from "typebox";
+import { z } from "zod";
 import { keyHint } from "../../modes/interactive/components/keybinding-hints.js";
 import type { ToolDefinition, ToolRenderResultOptions } from "../extensions/types.js";
 import { resolveToCwd } from "./path-utils.js";
@@ -10,12 +10,12 @@ import { getTextOutput, invalidArgText, shortenPath, str } from "./render-utils.
 import { wrapToolDefinition } from "./tool-definition-wrapper.js";
 import { DEFAULT_MAX_BYTES, formatSize, type TruncationResult, truncateHead } from "./truncate.js";
 
-const lsSchema = Type.Object({
-	path: Type.Optional(Type.String({ description: "Directory to list (default: current directory)" })),
-	limit: Type.Optional(Type.Number({ description: "Maximum number of entries to return (default: 500)" })),
+const lsSchema = z.looseObject({
+	path: z.string().describe("Directory to list (default: current directory)").optional(),
+	limit: z.number().describe("Maximum number of entries to return (default: 500)").optional(),
 });
 
-export type LsToolInput = Static<typeof lsSchema>;
+export type LsToolInput = z.output<typeof lsSchema>;
 
 const DEFAULT_LIMIT = 500;
 

@@ -2,15 +2,15 @@
  * Hello Tool - Minimal custom tool example
  */
 
-import { Type } from "@earendil-works/pi-ai";
 import { defineTool, type ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import { z } from "zod";
 
 const helloTool = defineTool({
 	name: "hello",
 	label: "Hello",
 	description: "A simple greeting tool",
-	parameters: Type.Object({
-		name: Type.String({ description: "Name to greet" }),
+	parameters: z.looseObject({
+		name: z.string().describe("Name to greet"),
 	}),
 
 	async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {

@@ -1,6 +1,7 @@
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { toolParametersToJsonSchema } from "@earendil-works/pi-ai";
 import { afterEach, describe, expect, it } from "vitest";
 import type { ExtensionContext } from "../src/core/extensions/types.js";
 import { createEditToolDefinition } from "../src/core/tools/edit.js";
@@ -20,8 +21,10 @@ afterEach(async () => {
 describe("edit tool prepareArguments", () => {
 	it("keeps legacy fields out of the public schema", () => {
 		const definition = createEditToolDefinition(process.cwd());
-		expect(definition.parameters.properties).not.toHaveProperty("oldText");
-		expect(definition.parameters.properties).not.toHaveProperty("newText");
+		const schema = toolParametersToJsonSchema(definition.parameters);
+		const properties = schema.properties as Record<string, unknown>;
+		expect(properties).not.toHaveProperty("oldText");
+		expect(properties).not.toHaveProperty("newText");
 	});
 
 	it("folds top-level oldText/newText into edits", () => {

@@ -1,5 +1,5 @@
-export type { Static, TSchema } from "typebox";
-export { Type } from "typebox";
+export type { ZodType } from "zod";
+export { z } from "zod";
 
 export * from "./api-registry.js";
 export * from "./env-api-keys.js";
@@ -42,5 +42,6 @@ export type {
 	OAuthSelectPrompt,
 } from "./utils/oauth/types.js";
 export * from "./utils/overflow.js";
-export * from "./utils/typebox-helpers.js";
+export * from "./utils/tool-schema.js";
 export * from "./utils/validation.js";
+export * from "./utils/zod-helpers.js";

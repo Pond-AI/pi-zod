@@ -6,7 +6,7 @@
  */
 
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { Type } from "typebox";
+import { z } from "zod";
 
 export default function (pi: ExtensionAPI) {
 	// Command entrypoint for reload.
@@ -25,7 +25,7 @@ export default function (pi: ExtensionAPI) {
 		name: "reload_runtime",
 		label: "Reload Runtime",
 		description: "Reload extensions, skills, prompts, and themes",
-		parameters: Type.Object({}),
+		parameters: z.looseObject({}),
 		async execute() {
 			pi.sendUserMessage("/reload-runtime", { deliverAs: "followUp" });
 			return {

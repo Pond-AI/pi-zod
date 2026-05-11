@@ -1,11 +1,11 @@
-import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 import { getModel } from "../src/models.js";
 import { complete, getEnvApiKey } from "../src/stream.js";
 import type { AssistantMessage, Context, Message, Tool, ToolCall } from "../src/types.js";
 
-const testToolSchema = Type.Object({
-	value: Type.Number({ description: "A number to double" }),
+const testToolSchema = z.looseObject({
+	value: z.number().describe("A number to double"),
 });
 
 const testTool: Tool<typeof testToolSchema> = {

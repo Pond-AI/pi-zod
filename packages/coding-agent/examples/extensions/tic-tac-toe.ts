@@ -20,7 +20,7 @@
 import { StringEnum } from "@earendil-works/pi-ai";
 import type { ExtensionAPI, ExtensionContext, Theme, ToolExecutionMode } from "@earendil-works/pi-coding-agent";
 import { type Component, matchesKey, Text, truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
-import { Type } from "typebox";
+import { z } from "zod";
 
 // Thrown from the tool on illegal actions. The agent runtime surfaces thrown
 // errors as tool errors (isError=true) without resetting any of our state.
@@ -866,7 +866,7 @@ Decide the target cell first, then dump every action for the turn in one go.
 			"When it is your tic-tac-toe turn, decide the target cell first, then emit every move_* plus the final play as separate tic_tac_toe tool calls in a SINGLE assistant response. Never split them across responses or wait for intermediate results.",
 			"Never ask the user for the board. The board and your cursor position are included in the user's move message; use tic_tac_toe_see_board if you need them restated.",
 		],
-		parameters: Type.Object({
+		parameters: z.looseObject({
 			action: StringEnum(["move_up", "move_down", "move_left", "move_right", "play"] as const, {
 				description:
 					"The single action to perform this call. Emit multiple tic_tac_toe calls in one response to string actions together.",
@@ -975,7 +975,7 @@ Decide the target cell first, then dump every action for the turn in one go.
 		description:
 			"Return the current tic-tac-toe board state and YOUR cursor position (Player O). Takes no arguments. Use this if you need the current state restated mid-turn (for example after a failed play). The user's cursor is never exposed.",
 		promptSnippet: "Inspect the tic-tac-toe board and your cursor",
-		parameters: Type.Object({}),
+		parameters: z.looseObject({}),
 
 		async execute(_toolCallId, _params, _signal, _onUpdate, _ctx) {
 			const boardAscii = boardToAscii(gameState.board, gameState.agentCursorRow, gameState.agentCursorCol);

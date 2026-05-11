@@ -4,7 +4,7 @@ import type { Api, ImageContent, Model, TextContent } from "@earendil-works/pi-a
 import { Text } from "@earendil-works/pi-tui";
 import { constants } from "fs";
 import { access as fsAccess, readFile as fsReadFile } from "fs/promises";
-import { type Static, Type } from "typebox";
+import { z } from "zod";
 import { getReadmePath } from "../../config.js";
 import { keyHint, keyText } from "../../modes/interactive/components/keybinding-hints.js";
 import { getLanguageFromPath, highlightCode, type Theme } from "../../modes/interactive/theme/theme.js";
@@ -17,13 +17,13 @@ import { getTextOutput, invalidArgText, replaceTabs, shortenPath, str } from "./
 import { wrapToolDefinition } from "./tool-definition-wrapper.js";
 import { DEFAULT_MAX_BYTES, DEFAULT_MAX_LINES, formatSize, type TruncationResult, truncateHead } from "./truncate.js";
 
-const readSchema = Type.Object({
-	path: Type.String({ description: "Path to the file to read (relative or absolute)" }),
-	offset: Type.Optional(Type.Number({ description: "Line number to start reading from (1-indexed)" })),
-	limit: Type.Optional(Type.Number({ description: "Maximum number of lines to read" })),
+const readSchema = z.looseObject({
+	path: z.string().describe("Path to the file to read (relative or absolute)"),
+	offset: z.number().describe("Line number to start reading from (1-indexed)").optional(),
+	limit: z.number().describe("Maximum number of lines to read").optional(),
 });
 
-export type ReadToolInput = Static<typeof readSchema>;
+export type ReadToolInput = z.output<typeof readSchema>;
 
 export interface ReadToolDetails {
 	truncation?: TruncationResult;

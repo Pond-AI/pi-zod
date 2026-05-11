@@ -7,7 +7,7 @@ import { html, LitElement, type TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { createRef, type Ref, ref } from "lit/directives/ref.js";
 import { X } from "lucide";
-import { type Static, Type } from "typebox";
+import { z } from "zod";
 import type { ArtifactMessage } from "../../components/Messages.js";
 import { ArtifactsRuntimeProvider } from "../../components/sandbox/ArtifactsRuntimeProvider.js";
 import { AttachmentsRuntimeProvider } from "../../components/sandbox/AttachmentsRuntimeProvider.js";
@@ -39,16 +39,16 @@ export interface Artifact {
 }
 
 // JSON-schema friendly parameters object (LLM-facing)
-const artifactsParamsSchema = Type.Object({
+const artifactsParamsSchema = z.looseObject({
 	command: StringEnum(["create", "update", "rewrite", "get", "delete", "logs"], {
 		description: "The operation to perform",
 	}),
-	filename: Type.String({ description: "Filename including extension (e.g., 'index.html', 'script.js')" }),
-	content: Type.Optional(Type.String({ description: "File content" })),
-	old_str: Type.Optional(Type.String({ description: "String to replace (for update command)" })),
-	new_str: Type.Optional(Type.String({ description: "Replacement string (for update command)" })),
+	filename: z.string().describe("Filename including extension (e.g., 'index.html', 'script.js')"),
+	content: z.string().describe("File content").optional(),
+	old_str: z.string().describe("String to replace (for update command)").optional(),
+	new_str: z.string().describe("Replacement string (for update command)").optional(),
 });
-export type ArtifactsParams = Static<typeof artifactsParamsSchema>;
+export type ArtifactsParams = z.output<typeof artifactsParamsSchema>;
 
 @customElement("artifacts-panel")
 export class ArtifactsPanel extends LitElement {
@@ -283,7 +283,7 @@ export class ArtifactsPanel extends LitElement {
 			},
 			parameters: artifactsParamsSchema,
 			// Execute mutates our local store and returns a plain output
-			execute: async (_toolCallId: string, args: Static<typeof artifactsParamsSchema>, _signal?: AbortSignal) => {
+			execute: async (_toolCallId: string, args: ArtifactsParams, _signal?: AbortSignal) => {
 				const output = await this.executeCommand(args);
 				return { content: [{ type: "text", text: output }], details: undefined };
 			},
@@ -430,7 +430,7 @@ export class ArtifactsPanel extends LitElement {
 			case "logs":
 				return this.getLogs(params);
 			default:
-				// Should never happen with TypeBox validation
+				// Should never happen with Zod validation
 				return `Error: Unknown command ${(params as any).command}`;
 		}
 	}

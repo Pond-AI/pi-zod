@@ -1,5 +1,5 @@
-import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 import { getModel } from "../src/models.js";
 import { complete } from "../src/stream.js";
 import type { Context, Model } from "../src/types.js";
@@ -15,14 +15,14 @@ interface MistralToolPayload {
 }
 
 describe("Mistral tool schema serialization", () => {
-	it("strips TypeBox symbol keys before the SDK validates tool schemas", async () => {
+	it("serializes Zod tool schemas before the SDK validates tool schemas", async () => {
 		const model: Model<"mistral-conversations"> = {
 			...getModel("mistral", "devstral-medium-latest"),
 			baseUrl: "http://127.0.0.1:9",
 		};
-		const parameters = Type.Object({
-			nested: Type.Object({
-				value: Type.String(),
+		const parameters = z.looseObject({
+			nested: z.looseObject({
+				value: z.string(),
 			}),
 		});
 		const context: Context = {

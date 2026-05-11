@@ -19,8 +19,8 @@
 	"dependencies": {
 		"@earendil-works/pi-ai": "^0.74.0",
 		"ignore": "^7.0.5",
-		"typebox": "^1.1.24",
-		"yaml": "^2.8.2"
+		"yaml": "^2.8.2",
+		"zod": "^4.4.3"
 	},
 	"keywords": [
 		"ai",

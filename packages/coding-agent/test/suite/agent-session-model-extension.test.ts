@@ -1,7 +1,7 @@
 import type { AgentTool, ThinkingLevel } from "@earendil-works/pi-agent-core";
 import { fauxAssistantMessage, fauxToolCall, type Model } from "@earendil-works/pi-ai";
-import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
+import { z } from "zod";
 import type { ExtensionAPI } from "../../src/index.js";
 import { createHarness, getAssistantTexts, type Harness } from "./harness.js";
 
@@ -98,7 +98,7 @@ describe("AgentSession model and extension characterization", () => {
 			name: "echo",
 			label: "Echo",
 			description: "Echo text back",
-			parameters: Type.Object({ text: Type.String() }),
+			parameters: z.looseObject({ text: z.string() }),
 			execute: async () => {
 				throw new Error("tool should have been blocked");
 			},
@@ -140,7 +140,7 @@ describe("AgentSession model and extension characterization", () => {
 			name: "echo",
 			label: "Echo",
 			description: "Echo text back",
-			parameters: Type.Object({ text: Type.String() }),
+			parameters: z.looseObject({ text: z.string() }),
 			execute: async (_toolCallId, params) => {
 				const text = typeof params === "object" && params !== null && "text" in params ? String(params.text) : "";
 				return { content: [{ type: "text", text }], details: { text } };

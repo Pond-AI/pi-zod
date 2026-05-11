@@ -1,6 +1,6 @@
 import type Anthropic from "@anthropic-ai/sdk";
-import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 import { getModel } from "../src/models.js";
 import { streamAnthropic } from "../src/providers/anthropic.js";
 import type { Context, ToolCall } from "../src/types.js";
@@ -87,9 +87,9 @@ describe("Anthropic raw SSE parsing", () => {
 				{
 					name: "edit",
 					description: "Edit a file.",
-					parameters: Type.Object({
-						path: Type.String(),
-						text: Type.String(),
+					parameters: z.looseObject({
+						path: z.string(),
+						text: z.string(),
 					}),
 				},
 			],

@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Breaking Changes
+
+- Migrated web UI tool parameter schemas from TypeBox to Zod.
+
 ## [0.74.0] - 2026-05-07
 
 ## [0.73.1] - 2026-05-07

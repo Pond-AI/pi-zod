@@ -3,7 +3,7 @@ import type { ToolResultMessage } from "@earendil-works/pi-ai";
 import { html } from "lit";
 import { createRef, ref } from "lit/directives/ref.js";
 import { FileText } from "lucide";
-import { type Static, Type } from "typebox";
+import { z } from "zod";
 import { EXTRACT_DOCUMENT_DESCRIPTION } from "../prompts/prompts.js";
 import { loadAttachment } from "../utils/attachment-utils.js";
 import { isCorsError } from "../utils/proxy-utils.js";
@@ -14,13 +14,11 @@ import type { ToolRenderer, ToolRenderResult } from "./types.js";
 // TYPES
 // ============================================================================
 
-const extractDocumentSchema = Type.Object({
-	url: Type.String({
-		description: "URL of the document to extract text from (PDF, DOCX, XLSX, or PPTX)",
-	}),
+const extractDocumentSchema = z.looseObject({
+	url: z.string().describe("URL of the document to extract text from (PDF, DOCX, XLSX, or PPTX)"),
 });
 
-export type ExtractDocumentParams = Static<typeof extractDocumentSchema>;
+export type ExtractDocumentParams = z.output<typeof extractDocumentSchema>;
 
 export interface ExtractDocumentResult {
 	extractedText: string;

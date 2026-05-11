@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
+import { z } from "zod";
 import {
 	complete,
 	fauxAssistantMessage,
@@ -7,7 +8,6 @@ import {
 	fauxToolCall,
 	registerFauxProvider,
 	stream,
-	Type,
 } from "../src/index.js";
 import type { AssistantMessageEvent, Context } from "../src/types.js";
 
@@ -201,7 +201,7 @@ describe("faux provider", () => {
 		const tool = {
 			name: "echo",
 			description: "Echo back text",
-			parameters: Type.Object({ text: Type.String() }),
+			parameters: z.looseObject({ text: z.string() }),
 		};
 		const context: Context = {
 			systemPrompt: "sys",

@@ -75,8 +75,8 @@ export default function (pi: ExtensionAPI) {
 		name: "my_tool",
 		label: "My Tool",
 		description: "Does something useful",
-		parameters: Type.Object({
-			input: Type.String(),
+		parameters: z.looseObject({
+			input: z.string(),
 		}),
 		execute: async (_toolCallId, params, _signal, _onUpdate, _ctx) => ({
 			content: [{ type: "text", text: \`Processed: \${params.input}\` }],
