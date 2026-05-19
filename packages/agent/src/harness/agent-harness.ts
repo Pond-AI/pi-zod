@@ -4,7 +4,7 @@ import {
 	type Model,
 	streamSimple,
 	type UserMessage,
-} from "@earendil-works/pi-ai";
+} from "@pond-ai/pi-ai";
 import { Agent, type QueueMode } from "../agent.js";
 import type { AgentEvent, AgentMessage, AgentTool, ThinkingLevel } from "../types.js";
 import { collectEntriesForBranchSummary, generateBranchSummary } from "./compaction/branch-summarization.js";

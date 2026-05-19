@@ -10,7 +10,7 @@ import {
 	streamSimple,
 	type ToolResultMessage,
 	validateToolArguments,
-} from "@earendil-works/pi-ai";
+} from "@pond-ai/pi-ai";
 import type {
 	AgentContext,
 	AgentEvent,

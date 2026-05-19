@@ -19,7 +19,7 @@ import {
 	getModel,
 	type Model,
 	type SimpleStreamOptions,
-} from "@earendil-works/pi-ai";
+} from "@pond-ai/pi-ai";
 import { z } from "zod";
 import {
 	getOpenAICodexWebSocketDebugStats,

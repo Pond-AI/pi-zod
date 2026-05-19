@@ -1,5 +1,5 @@
-import type { AgentMessage, AgentTool } from "@earendil-works/pi-agent-core";
-import type { ToolResultMessage } from "@earendil-works/pi-ai";
+import type { AgentMessage, AgentTool } from "@pond-ai/pi-agent-core";
+import type { ToolResultMessage } from "@pond-ai/pi-ai";
 import { html, LitElement } from "lit";
 import { property, state } from "lit/decorators.js";
 

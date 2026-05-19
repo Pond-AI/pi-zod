@@ -1,5 +1,5 @@
-import type { AgentMessage, ThinkingLevel } from "@earendil-works/pi-agent-core";
-import type { Model } from "@earendil-works/pi-ai";
+import type { AgentMessage, ThinkingLevel } from "@pond-ai/pi-agent-core";
+import type { Model } from "@pond-ai/pi-ai";
 
 /**
  * Transaction interface for atomic operations across stores.

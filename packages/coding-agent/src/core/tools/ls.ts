@@ -1,5 +1,5 @@
-import type { AgentTool } from "@earendil-works/pi-agent-core";
-import { Text } from "@earendil-works/pi-tui";
+import type { AgentTool } from "@pond-ai/pi-agent-core";
+import { Text } from "@pond-ai/pi-tui";
 import { existsSync, readdirSync, statSync } from "fs";
 import nodePath from "path";
 import { z } from "zod";

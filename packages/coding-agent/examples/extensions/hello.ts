@@ -2,7 +2,7 @@
  * Hello Tool - Minimal custom tool example
  */
 
-import { defineTool, type ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import { defineTool, type ExtensionAPI } from "@pond-ai/pi-coding-agent";
 import { z } from "zod";
 
 const helloTool = defineTool({

@@ -1,7 +1,7 @@
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { toolParametersToJsonSchema } from "@earendil-works/pi-ai";
+import { toolParametersToJsonSchema } from "@pond-ai/pi-ai";
 import { afterEach, describe, expect, it } from "vitest";
 import type { ExtensionContext } from "../src/core/extensions/types.js";
 import { createEditToolDefinition } from "../src/core/tools/edit.js";

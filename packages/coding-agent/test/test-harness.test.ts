@@ -3,8 +3,8 @@
  * Validates that the faux provider and session factory work correctly.
  */
 
-import type { AgentTool } from "@earendil-works/pi-agent-core";
-import type { AssistantMessage } from "@earendil-works/pi-ai";
+import type { AgentTool } from "@pond-ai/pi-agent-core";
+import type { AssistantMessage } from "@pond-ai/pi-ai";
 import { afterEach, describe, expect, it } from "vitest";
 import { z } from "zod";
 import { createHarness, createHarnessWithExtensions, type Harness } from "./test-harness.js";

@@ -7,7 +7,7 @@
  * - Registers additional tools at runtime via /add-echo-tool <name>
  */
 
-import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import type { ExtensionAPI } from "@pond-ai/pi-coding-agent";
 import { z } from "zod";
 
 const ECHO_PARAMS = z.looseObject({
