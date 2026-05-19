@@ -6,7 +6,7 @@
 
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { Editor, type EditorTheme, Key, matchesKey, Text, truncateToWidth } from "@earendil-works/pi-tui";
-import { Type } from "typebox";
+import { z } from "zod";
 
 interface OptionWithDesc {
 	label: string;
@@ -23,14 +23,14 @@ interface QuestionDetails {
 }
 
 // Options with labels and optional descriptions
-const OptionSchema = Type.Object({
-	label: Type.String({ description: "Display label for the option" }),
-	description: Type.Optional(Type.String({ description: "Optional description shown below label" })),
+const OptionSchema = z.looseObject({
+	label: z.string().describe("Display label for the option"),
+	description: z.optional(z.string().describe("Optional description shown below label")),
 });
 
-const QuestionParams = Type.Object({
-	question: Type.String({ description: "The question to ask the user" }),
-	options: Type.Array(OptionSchema, { description: "Options for the user to choose from" }),
+const QuestionParams = z.looseObject({
+	question: z.string().describe("The question to ask the user"),
+	options: z.array(OptionSchema).describe("Options for the user to choose from"),
 });
 
 export default function question(pi: ExtensionAPI) {

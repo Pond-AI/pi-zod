@@ -1,5 +1,5 @@
-import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 import { getModel } from "../src/models.js";
 import { complete } from "../src/stream.js";
 import type { Api, Context, Model, StreamOptions, Tool } from "../src/types.js";
@@ -20,8 +20,8 @@ const oauthTokens = await Promise.all([
 const [anthropicOAuthToken, githubCopilotToken, openaiCodexToken] = oauthTokens;
 
 // Simple calculate tool
-const calculateSchema = Type.Object({
-	expression: Type.String({ description: "The mathematical expression to evaluate" }),
+const calculateSchema = z.looseObject({
+	expression: z.string().describe("The mathematical expression to evaluate"),
 });
 
 const calculateTool: Tool = {

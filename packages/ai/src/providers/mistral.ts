@@ -26,6 +26,7 @@ import { AssistantMessageEventStream } from "../utils/event-stream.js";
 import { shortHash } from "../utils/hash.js";
 import { parseStreamingJson } from "../utils/json-parse.js";
 import { sanitizeSurrogates } from "../utils/sanitize-unicode.js";
+import { toolParametersToJsonSchema } from "../utils/tool-schema.js";
 import { buildBaseOptions } from "./simple-options.js";
 import { transformMessages } from "./transform-messages.js";
 
@@ -458,26 +459,10 @@ function toFunctionTools(tools: Tool[]): Array<FunctionTool & { type: "function"
 		function: {
 			name: tool.name,
 			description: tool.description,
-			parameters: stripSymbolKeys(tool.parameters) as Record<string, unknown>,
+			parameters: toolParametersToJsonSchema(tool.parameters),
 			strict: false,
 		},
 	}));
-}
-
-function stripSymbolKeys(value: unknown): unknown {
-	if (Array.isArray(value)) {
-		return value.map((item) => stripSymbolKeys(item));
-	}
-
-	if (value && typeof value === "object") {
-		const result: Record<string, unknown> = {};
-		for (const [key, entry] of Object.entries(value)) {
-			result[key] = stripSymbolKeys(entry);
-		}
-		return result;
-	}
-
-	return value;
 }
 
 function toChatMessages(messages: Message[], supportsImages: boolean): ChatCompletionStreamRequestMessage[] {

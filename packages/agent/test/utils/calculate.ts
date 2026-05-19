@@ -1,4 +1,4 @@
-import { type Static, Type } from "typebox";
+import { z } from "zod";
 import type { AgentTool, AgentToolResult } from "../../src/types.js";
 
 export interface CalculateResult extends AgentToolResult<undefined> {
@@ -15,11 +15,11 @@ export function calculate(expression: string): CalculateResult {
 	}
 }
 
-const calculateSchema = Type.Object({
-	expression: Type.String({ description: "The mathematical expression to evaluate" }),
+const calculateSchema = z.looseObject({
+	expression: z.string().describe("The mathematical expression to evaluate"),
 });
 
-type CalculateParams = Static<typeof calculateSchema>;
+type CalculateParams = z.output<typeof calculateSchema>;
 
 export const calculateTool: AgentTool<typeof calculateSchema, undefined> = {
 	label: "Calculator",

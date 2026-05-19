@@ -138,7 +138,7 @@ See [docs/extensions.md](../../docs/extensions.md) for full documentation.
 
 ```typescript
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { Type } from "typebox";
+import { z } from "zod";
 
 export default function (pi: ExtensionAPI) {
   // Subscribe to lifecycle events
@@ -154,8 +154,8 @@ export default function (pi: ExtensionAPI) {
     name: "greet",
     label: "Greeting",
     description: "Generate a greeting",
-    parameters: Type.Object({
-      name: Type.String({ description: "Name to greet" }),
+    parameters: z.looseObject({
+      name: z.string().describe("Name to greet"),
     }),
     async execute(toolCallId, params, onUpdate, ctx, signal) {
       return {
@@ -184,8 +184,8 @@ import { StringEnum } from "@earendil-works/pi-ai";
 // Good
 action: StringEnum(["list", "add"] as const)
 
-// Bad - doesn't work with Google
-action: Type.Union([Type.Literal("list"), Type.Literal("add")])
+// Bad - emits anyOf/const instead of a simple enum
+action: z.union([z.literal("list"), z.literal("add")])
 ```
 
 **State persistence via details:**

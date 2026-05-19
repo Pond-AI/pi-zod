@@ -1,5 +1,5 @@
-import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 import { getModel } from "../src/models.js";
 import { complete } from "../src/stream.js";
 import type { Api, Context, Model, StreamOptions, ToolResultMessage } from "../src/types.js";
@@ -12,7 +12,7 @@ import { hasCloudflareAiGatewayCredentials, hasCloudflareWorkersAICredentials } 
 import { resolveApiKey } from "./oauth.js";
 
 // Empty schema for test tools - must be proper OBJECT type for Cloud Code Assist
-const emptySchema = Type.Object({});
+const emptySchema = z.looseObject({});
 
 // Resolve OAuth tokens at module level (async, runs before tests)
 const oauthTokens = await Promise.all([

@@ -1,8 +1,8 @@
 import type { AgentTool } from "@earendil-works/pi-agent-core";
 import { fauxAssistantMessage, fauxToolCall } from "@earendil-works/pi-ai";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
+import { z } from "zod";
 import { createHarness, getAssistantTexts, getMessageText, getUserTexts, type Harness } from "./harness.js";
 
 async function createWaitingHarness(
@@ -26,7 +26,7 @@ async function createWaitingHarness(
 		name: "wait",
 		label: "Wait",
 		description: "Wait for release",
-		parameters: Type.Object({}),
+		parameters: z.looseObject({}),
 		execute: async () => {
 			await toolRelease;
 			return {

@@ -7,7 +7,7 @@
 
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { Editor, type EditorTheme, Key, matchesKey, Text, truncateToWidth } from "@earendil-works/pi-tui";
-import { Type } from "typebox";
+import { z } from "zod";
 
 // Types
 interface QuestionOption {
@@ -41,26 +41,24 @@ interface QuestionnaireResult {
 }
 
 // Schema
-const QuestionOptionSchema = Type.Object({
-	value: Type.String({ description: "The value returned when selected" }),
-	label: Type.String({ description: "Display label for the option" }),
-	description: Type.Optional(Type.String({ description: "Optional description shown below label" })),
+const QuestionOptionSchema = z.looseObject({
+	value: z.string().describe("The value returned when selected"),
+	label: z.string().describe("Display label for the option"),
+	description: z.optional(z.string().describe("Optional description shown below label")),
 });
 
-const QuestionSchema = Type.Object({
-	id: Type.String({ description: "Unique identifier for this question" }),
-	label: Type.Optional(
-		Type.String({
-			description: "Short contextual label for tab bar, e.g. 'Scope', 'Priority' (defaults to Q1, Q2)",
-		}),
+const QuestionSchema = z.looseObject({
+	id: z.string().describe("Unique identifier for this question"),
+	label: z.optional(
+		z.string().describe("Short contextual label for tab bar, e.g. 'Scope', 'Priority' (defaults to Q1, Q2)"),
 	),
-	prompt: Type.String({ description: "The full question text to display" }),
-	options: Type.Array(QuestionOptionSchema, { description: "Available options to choose from" }),
-	allowOther: Type.Optional(Type.Boolean({ description: "Allow 'Type something' option (default: true)" })),
+	prompt: z.string().describe("The full question text to display"),
+	options: z.array(QuestionOptionSchema).describe("Available options to choose from"),
+	allowOther: z.optional(z.boolean().describe("Allow 'Type something' option (default: true)")),
 });
 
-const QuestionnaireParams = Type.Object({
-	questions: Type.Array(QuestionSchema, { description: "Questions to ask the user" }),
+const QuestionnaireParams = z.looseObject({
+	questions: z.array(QuestionSchema).describe("Questions to ask the user"),
 });
 
 function errorResult(

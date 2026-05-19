@@ -3,8 +3,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import type { AgentTool } from "@earendil-works/pi-agent-core";
 import { fauxAssistantMessage, fauxToolCall, type Model } from "@earendil-works/pi-ai";
-import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
+import { z } from "zod";
 import type { PromptTemplate } from "../../src/core/prompt-templates.js";
 import { createSyntheticSourceInfo } from "../../src/core/source-info.js";
 import { createTestResourceLoader } from "../utilities.js";
@@ -45,7 +45,7 @@ describe("AgentSession prompt characterization", () => {
 			name: "echo",
 			label: "Echo",
 			description: "Echo text back",
-			parameters: Type.Object({ text: Type.String() }),
+			parameters: z.looseObject({ text: z.string() }),
 			execute: async (_toolCallId, params) => {
 				const text = typeof params === "object" && params !== null && "text" in params ? String(params.text) : "";
 				toolRuns.push(text);
@@ -82,7 +82,7 @@ describe("AgentSession prompt characterization", () => {
 			name,
 			label: name,
 			description: `${name} tool`,
-			parameters: Type.Object({ value: Type.String() }),
+			parameters: z.looseObject({ value: z.string() }),
 			execute: async (_toolCallId, params) => {
 				const value =
 					typeof params === "object" && params !== null && "value" in params ? String(params.value) : "";
@@ -268,7 +268,7 @@ describe("AgentSession prompt characterization", () => {
 			name: "wait",
 			label: "Wait",
 			description: "Wait for release",
-			parameters: Type.Object({}),
+			parameters: z.looseObject({}),
 			execute: async () => {
 				await toolRelease;
 				return {

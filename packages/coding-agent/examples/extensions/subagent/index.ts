@@ -21,7 +21,7 @@ import type { Message } from "@earendil-works/pi-ai";
 import { StringEnum } from "@earendil-works/pi-ai";
 import { type ExtensionAPI, getMarkdownTheme, withFileMutationQueue } from "@earendil-works/pi-coding-agent";
 import { Container, Markdown, Spacer, Text } from "@earendil-works/pi-tui";
-import { Type } from "typebox";
+import { z } from "zod";
 import { type AgentConfig, type AgentScope, discoverAgents } from "./agents.js";
 
 const MAX_PARALLEL_TASKS = 8;
@@ -399,16 +399,16 @@ async function runSingleAgent(
 	}
 }
 
-const TaskItem = Type.Object({
-	agent: Type.String({ description: "Name of the agent to invoke" }),
-	task: Type.String({ description: "Task to delegate to the agent" }),
-	cwd: Type.Optional(Type.String({ description: "Working directory for the agent process" })),
+const TaskItem = z.looseObject({
+	agent: z.string().describe("Name of the agent to invoke"),
+	task: z.string().describe("Task to delegate to the agent"),
+	cwd: z.optional(z.string().describe("Working directory for the agent process")),
 });
 
-const ChainItem = Type.Object({
-	agent: Type.String({ description: "Name of the agent to invoke" }),
-	task: Type.String({ description: "Task with optional {previous} placeholder for prior output" }),
-	cwd: Type.Optional(Type.String({ description: "Working directory for the agent process" })),
+const ChainItem = z.looseObject({
+	agent: z.string().describe("Name of the agent to invoke"),
+	task: z.string().describe("Task with optional {previous} placeholder for prior output"),
+	cwd: z.optional(z.string().describe("Working directory for the agent process")),
 });
 
 const AgentScopeSchema = StringEnum(["user", "project", "both"] as const, {
@@ -416,16 +416,16 @@ const AgentScopeSchema = StringEnum(["user", "project", "both"] as const, {
 	default: "user",
 });
 
-const SubagentParams = Type.Object({
-	agent: Type.Optional(Type.String({ description: "Name of the agent to invoke (for single mode)" })),
-	task: Type.Optional(Type.String({ description: "Task to delegate (for single mode)" })),
-	tasks: Type.Optional(Type.Array(TaskItem, { description: "Array of {agent, task} for parallel execution" })),
-	chain: Type.Optional(Type.Array(ChainItem, { description: "Array of {agent, task} for sequential execution" })),
-	agentScope: Type.Optional(AgentScopeSchema),
-	confirmProjectAgents: Type.Optional(
-		Type.Boolean({ description: "Prompt before running project-local agents. Default: true.", default: true }),
+const SubagentParams = z.looseObject({
+	agent: z.optional(z.string().describe("Name of the agent to invoke (for single mode)")),
+	task: z.optional(z.string().describe("Task to delegate (for single mode)")),
+	tasks: z.optional(z.array(TaskItem).describe("Array of {agent, task} for parallel execution")),
+	chain: z.optional(z.array(ChainItem).describe("Array of {agent, task} for sequential execution")),
+	agentScope: z.optional(AgentScopeSchema),
+	confirmProjectAgents: z.optional(
+		z.boolean().describe("Prompt before running project-local agents. Default: true.").meta({ default: true }),
 	),
-	cwd: Type.Optional(Type.String({ description: "Working directory for the agent process (single mode)" })),
+	cwd: z.optional(z.string().describe("Working directory for the agent process (single mode)")),
 });
 
 export default function (pi: ExtensionAPI) {

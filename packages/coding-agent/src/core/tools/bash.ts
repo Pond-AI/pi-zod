@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import type { AgentTool } from "@earendil-works/pi-agent-core";
 import { Container, Text, truncateToWidth } from "@earendil-works/pi-tui";
 import { spawn } from "child_process";
-import { type Static, Type } from "typebox";
+import { z } from "zod";
 import { keyHint } from "../../modes/interactive/components/keybinding-hints.js";
 import { truncateToVisualLines } from "../../modes/interactive/components/visual-truncate.js";
 import { theme } from "../../modes/interactive/theme/theme.js";
@@ -20,12 +20,12 @@ import { getTextOutput, invalidArgText, str } from "./render-utils.js";
 import { wrapToolDefinition } from "./tool-definition-wrapper.js";
 import { DEFAULT_MAX_BYTES, DEFAULT_MAX_LINES, formatSize, type TruncationResult } from "./truncate.js";
 
-const bashSchema = Type.Object({
-	command: Type.String({ description: "Bash command to execute" }),
-	timeout: Type.Optional(Type.Number({ description: "Timeout in seconds (optional, no default timeout)" })),
+const bashSchema = z.looseObject({
+	command: z.string().describe("Bash command to execute"),
+	timeout: z.number().describe("Timeout in seconds (optional, no default timeout)").optional(),
 });
 
-export type BashToolInput = Static<typeof bashSchema>;
+export type BashToolInput = z.output<typeof bashSchema>;
 
 export interface BashToolDetails {
 	truncation?: TruncationResult;

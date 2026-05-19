@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Breaking Changes
+
+- Migrated tool parameter schemas from TypeBox to Zod. `Tool.parameters` now accepts Zod schemas, providers receive JSON Schema Draft 2020-12 generated from those schemas, and tool execution validates against the original Zod schema so synchronous refinements are enforced.
+
 ### Added
 
 - Added Together AI as a built-in OpenAI-compatible provider with generated model metadata and `TOGETHER_API_KEY` authentication ([#3624](https://github.com/earendil-works/pi-mono/pull/3624) by [@Nutlope](https://github.com/Nutlope)).

@@ -14,8 +14,8 @@ import {
 	type ImageContent,
 	type TextContent,
 } from "@earendil-works/pi-ai";
-import { Type } from "typebox";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { z } from "zod";
 import { AgentSession } from "../src/core/agent-session.js";
 import { AuthStorage } from "../src/core/auth-storage.js";
 import { ModelRegistry } from "../src/core/model-registry.js";
@@ -342,7 +342,7 @@ describe("AgentSession concurrent prompt guard", () => {
 			name: "dummy",
 			description: "Dummy tool",
 			label: "dummy",
-			parameters: Type.Object({ q: Type.String() }),
+			parameters: z.looseObject({ q: z.string() }),
 			execute: async (_toolCallId: string, params: unknown) => {
 				const q =
 					typeof params === "object" && params !== null && "q" in params
@@ -487,7 +487,7 @@ describe("AgentSession concurrent prompt guard", () => {
 			name: "dummy",
 			description: "Dummy tool",
 			label: "dummy",
-			parameters: Type.Object({ q: Type.String() }),
+			parameters: z.looseObject({ q: z.string() }),
 			execute: async (_toolCallId: string, params: unknown) => {
 				const q =
 					typeof params === "object" && params !== null && "q" in params

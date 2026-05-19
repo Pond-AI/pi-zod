@@ -6,8 +6,8 @@ import {
 	type Model,
 	type UserMessage,
 } from "@earendil-works/pi-ai";
-import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 import { agentLoop, agentLoopContinue } from "../src/agent-loop.js";
 import type { AgentContext, AgentEvent, AgentLoopConfig, AgentMessage, AgentTool } from "../src/types.js";
 
@@ -237,7 +237,7 @@ describe("agentLoop with AgentMessage", () => {
 	});
 
 	it("should handle tool calls and results", async () => {
-		const toolSchema = Type.Object({ value: Type.String() });
+		const toolSchema = z.looseObject({ value: z.string() });
 		const executed: string[] = [];
 		const tool: AgentTool<typeof toolSchema, { value: string }> = {
 			name: "echo",
@@ -308,7 +308,7 @@ describe("agentLoop with AgentMessage", () => {
 	});
 
 	it("should execute mutated beforeToolCall args without revalidation", async () => {
-		const toolSchema = Type.Object({ value: Type.String() });
+		const toolSchema = z.looseObject({ value: z.string() });
 		const executed: Array<string | number> = [];
 		const tool: AgentTool<typeof toolSchema, { value: string | number }> = {
 			name: "echo",
@@ -370,8 +370,8 @@ describe("agentLoop with AgentMessage", () => {
 	});
 
 	it("should prepare tool arguments for validation", async () => {
-		const replaceSchema = Type.Object({ oldText: Type.String(), newText: Type.String() });
-		const toolSchema = Type.Object({ edits: Type.Array(replaceSchema) });
+		const replaceSchema = z.looseObject({ oldText: z.string(), newText: z.string() });
+		const toolSchema = z.looseObject({ edits: z.array(replaceSchema) });
 		const executed: Array<Array<{ oldText: string; newText: string }>> = [];
 		const tool: AgentTool<typeof toolSchema, { count: number }> = {
 			name: "edit",
@@ -450,7 +450,7 @@ describe("agentLoop with AgentMessage", () => {
 	});
 
 	it("should emit tool_execution_end in completion order but persist tool results in source order", async () => {
-		const toolSchema = Type.Object({ value: Type.String() });
+		const toolSchema = z.looseObject({ value: z.string() });
 		let firstResolved = false;
 		let parallelObserved = false;
 		let releaseFirst: (() => void) | undefined;
@@ -545,7 +545,7 @@ describe("agentLoop with AgentMessage", () => {
 	});
 
 	it("should inject queued messages after all tool calls complete", async () => {
-		const toolSchema = Type.Object({ value: Type.String() });
+		const toolSchema = z.looseObject({ value: z.string() });
 		const executed: string[] = [];
 		const tool: AgentTool<typeof toolSchema, { value: string }> = {
 			name: "echo",
@@ -651,7 +651,7 @@ describe("agentLoop with AgentMessage", () => {
 	});
 
 	it("should force sequential execution when a tool has executionMode=sequential even with default parallel config", async () => {
-		const toolSchema = Type.Object({ value: Type.String() });
+		const toolSchema = z.looseObject({ value: z.string() });
 		let firstResolved = false;
 		let parallelObserved = false;
 		let releaseFirst: (() => void) | undefined;
@@ -734,7 +734,7 @@ describe("agentLoop with AgentMessage", () => {
 	});
 
 	it("should force sequential execution when one of multiple tools has executionMode=sequential", async () => {
-		const toolSchema = Type.Object({ value: Type.String() });
+		const toolSchema = z.looseObject({ value: z.string() });
 		const executionOrder: string[] = [];
 		let releaseSlow: (() => void) | undefined;
 		const slowDone = new Promise<void>((resolve) => {
@@ -821,7 +821,7 @@ describe("agentLoop with AgentMessage", () => {
 	});
 
 	it("should allow parallel execution when all tools have executionMode=parallel", async () => {
-		const toolSchema = Type.Object({ value: Type.String() });
+		const toolSchema = z.looseObject({ value: z.string() });
 		let firstResolved = false;
 		let parallelObserved = false;
 		let releaseFirst: (() => void) | undefined;
@@ -895,7 +895,7 @@ describe("agentLoop with AgentMessage", () => {
 	});
 
 	it("should use prepareNextTurn snapshot before continuing", async () => {
-		const toolSchema = Type.Object({ value: Type.String() });
+		const toolSchema = z.looseObject({ value: z.string() });
 		const tool: AgentTool<typeof toolSchema, { value: string }> = {
 			name: "echo",
 			label: "Echo",
@@ -968,7 +968,7 @@ describe("agentLoop with AgentMessage", () => {
 	});
 
 	it("should stop after the current turn when shouldStopAfterTurn returns true", async () => {
-		const toolSchema = Type.Object({ value: Type.String() });
+		const toolSchema = z.looseObject({ value: z.string() });
 		const executed: string[] = [];
 		const tool: AgentTool<typeof toolSchema, { value: string }> = {
 			name: "echo",
@@ -1065,7 +1065,7 @@ describe("agentLoop with AgentMessage", () => {
 	});
 
 	it("should stop after a tool batch when every tool result sets terminate=true", async () => {
-		const toolSchema = Type.Object({ value: Type.String() });
+		const toolSchema = z.looseObject({ value: z.string() });
 		const tool: AgentTool<typeof toolSchema, { value: string }> = {
 			name: "echo",
 			label: "Echo",
@@ -1117,7 +1117,7 @@ describe("agentLoop with AgentMessage", () => {
 	});
 
 	it("should continue after parallel tool calls when not all tool results terminate", async () => {
-		const toolSchema = Type.Object({ value: Type.String() });
+		const toolSchema = z.looseObject({ value: z.string() });
 		const tool: AgentTool<typeof toolSchema, { value: string }> = {
 			name: "echo",
 			label: "Echo",
@@ -1182,7 +1182,7 @@ describe("agentLoop with AgentMessage", () => {
 	});
 
 	it("should allow afterToolCall to mark a tool batch as terminating", async () => {
-		const toolSchema = Type.Object({ value: Type.String() });
+		const toolSchema = z.looseObject({ value: z.string() });
 		const tool: AgentTool<typeof toolSchema, { value: string }> = {
 			name: "echo",
 			label: "Echo",

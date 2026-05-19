@@ -4,7 +4,7 @@ import { Text } from "@earendil-works/pi-tui";
 import { spawn } from "child_process";
 import { existsSync } from "fs";
 import path from "path";
-import { type Static, Type } from "typebox";
+import { z } from "zod";
 import { keyHint } from "../../modes/interactive/components/keybinding-hints.js";
 import { ensureTool } from "../../utils/tools-manager.js";
 import type { ToolDefinition, ToolRenderResultOptions } from "../extensions/types.js";
@@ -17,15 +17,13 @@ function toPosixPath(value: string): string {
 	return value.split(path.sep).join("/");
 }
 
-const findSchema = Type.Object({
-	pattern: Type.String({
-		description: "Glob pattern to match files, e.g. '*.ts', '**/*.json', or 'src/**/*.spec.ts'",
-	}),
-	path: Type.Optional(Type.String({ description: "Directory to search in (default: current directory)" })),
-	limit: Type.Optional(Type.Number({ description: "Maximum number of results (default: 1000)" })),
+const findSchema = z.looseObject({
+	pattern: z.string().describe("Glob pattern to match files, e.g. '*.ts', '**/*.json', or 'src/**/*.spec.ts'"),
+	path: z.string().describe("Directory to search in (default: current directory)").optional(),
+	limit: z.number().describe("Maximum number of results (default: 1000)").optional(),
 });
 
-export type FindToolInput = Static<typeof findSchema>;
+export type FindToolInput = z.output<typeof findSchema>;
 
 const DEFAULT_LIMIT = 1000;
 

@@ -7,7 +7,7 @@
 
 import { defineTool, type ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { Text } from "@earendil-works/pi-tui";
-import { Type } from "typebox";
+import { z } from "zod";
 
 interface StructuredOutputDetails {
 	headline: string;
@@ -25,10 +25,10 @@ const structuredOutputTool = defineTool({
 		"Use structured_output as your final action when the user asks for structured output, JSON-like output, or a machine-readable summary.",
 		"After calling structured_output, do not emit another assistant response in the same turn.",
 	],
-	parameters: Type.Object({
-		headline: Type.String({ description: "Short title for the result" }),
-		summary: Type.String({ description: "One-paragraph summary" }),
-		actionItems: Type.Array(Type.String(), { description: "Concrete next steps or key bullets" }),
+	parameters: z.looseObject({
+		headline: z.string().describe("Short title for the result"),
+		summary: z.string().describe("One-paragraph summary"),
+		actionItems: z.array(z.string()).describe("Concrete next steps or key bullets"),
 	}),
 
 	async execute(_toolCallId, params) {

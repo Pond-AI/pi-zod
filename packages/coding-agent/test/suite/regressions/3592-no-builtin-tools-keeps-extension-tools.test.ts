@@ -2,8 +2,8 @@ import { existsSync, mkdirSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { getModel } from "@earendil-works/pi-ai";
-import { Type } from "typebox";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { z } from "zod";
 import {
 	createAgentSessionFromServices,
 	createAgentSessionServices,
@@ -44,7 +44,7 @@ describe("regression #3592: no-builtin-tools keeps extension tools enabled", () 
 							label: "Dynamic Tool",
 							description: "Tool registered from session_start",
 							promptSnippet: "Run dynamic test behavior",
-							parameters: Type.Object({}),
+							parameters: z.looseObject({}),
 							execute: async () => ({
 								content: [{ type: "text", text: "ok" }],
 								details: {},

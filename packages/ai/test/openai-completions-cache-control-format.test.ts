@@ -1,5 +1,5 @@
-import { Type } from "typebox";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { z } from "zod";
 import { getModel } from "../src/models.js";
 import { streamOpenAICompletions } from "../src/providers/openai-completions.js";
 import type { Model } from "../src/types.js";
@@ -86,8 +86,8 @@ async function capturePayload(
 				{
 					name: "read",
 					description: "Read a file",
-					parameters: Type.Object({
-						path: Type.String(),
+					parameters: z.looseObject({
+						path: z.string(),
 					}),
 				},
 			],

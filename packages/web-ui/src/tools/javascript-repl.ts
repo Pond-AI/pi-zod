@@ -4,7 +4,7 @@ import { i18n } from "@mariozechner/mini-lit";
 import { html } from "lit";
 import { createRef, ref } from "lit/directives/ref.js";
 import { Code } from "lucide";
-import { type Static, Type } from "typebox";
+import { z } from "zod";
 import { type SandboxFile, SandboxIframe, type SandboxResult } from "../components/SandboxedIframe.js";
 import type { SandboxRuntimeProvider } from "../components/sandbox/SandboxRuntimeProvider.js";
 import { JAVASCRIPT_REPL_TOOL_DESCRIPTION } from "../prompts/prompts.js";
@@ -105,15 +105,14 @@ export type JavaScriptReplToolResult = {
 		| undefined;
 };
 
-const javascriptReplSchema = Type.Object({
-	title: Type.String({
-		description:
-			"Brief title describing what the code snippet tries to achieve in active form, e.g. 'Calculating sum'",
-	}),
-	code: Type.String({ description: "JavaScript code to execute" }),
+const javascriptReplSchema = z.looseObject({
+	title: z
+		.string()
+		.describe("Brief title describing what the code snippet tries to achieve in active form, e.g. 'Calculating sum'"),
+	code: z.string().describe("JavaScript code to execute"),
 });
 
-export type JavaScriptReplParams = Static<typeof javascriptReplSchema>;
+export type JavaScriptReplParams = z.output<typeof javascriptReplSchema>;
 
 interface JavaScriptReplResult {
 	output?: string;
@@ -142,7 +141,7 @@ export function createJavaScriptReplTool(): AgentTool<typeof javascriptReplSchem
 			return JAVASCRIPT_REPL_TOOL_DESCRIPTION(runtimeProviderDescriptions);
 		},
 		parameters: javascriptReplSchema,
-		execute: async function (_toolCallId: string, args: Static<typeof javascriptReplSchema>, signal?: AbortSignal) {
+		execute: async function (_toolCallId: string, args: JavaScriptReplParams, signal?: AbortSignal) {
 			const result = await executeJavaScript(
 				args.code,
 				this.runtimeProvidersFactory?.() ?? [],

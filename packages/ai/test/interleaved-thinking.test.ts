@@ -1,15 +1,15 @@
-import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 import { getEnvApiKey } from "../src/env-api-keys.js";
 import { getModel } from "../src/models.js";
 import { completeSimple } from "../src/stream.js";
 import type { Api, Context, Model, StopReason, Tool, ToolCall, ToolResultMessage } from "../src/types.js";
-import { StringEnum } from "../src/utils/typebox-helpers.js";
+import { StringEnum } from "../src/utils/zod-helpers.js";
 import { hasBedrockCredentials } from "./bedrock-utils.js";
 
-const calculatorSchema = Type.Object({
-	a: Type.Number({ description: "First number" }),
-	b: Type.Number({ description: "Second number" }),
+const calculatorSchema = z.looseObject({
+	a: z.number().describe("First number"),
+	b: z.number().describe("Second number"),
 	operation: StringEnum(["add", "subtract", "multiply", "divide"], {
 		description: "The operation to perform.",
 	}),

@@ -10,8 +10,8 @@
  * Regression test for: https://github.com/earendil-works/pi-mono/issues/1022
  */
 
-import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 import { getModel } from "../src/models.js";
 import { completeSimple, getEnvApiKey } from "../src/stream.js";
 import type { AssistantMessage, Message, Tool, ToolResultMessage } from "../src/types.js";
@@ -23,8 +23,8 @@ const openrouterKey = getEnvApiKey("openrouter");
 const codexToken = await resolveApiKey("openai-codex");
 
 // Simple echo tool for testing
-const echoToolSchema = Type.Object({
-	message: Type.String({ description: "Message to echo back" }),
+const echoToolSchema = z.looseObject({
+	message: z.string().describe("Message to echo back"),
 });
 
 const echoTool: Tool<typeof echoToolSchema> = {

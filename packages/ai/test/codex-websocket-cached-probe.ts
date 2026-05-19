@@ -8,7 +8,7 @@
 
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { Type } from "typebox";
+import { z } from "zod";
 import { AuthStorage } from "../../coding-agent/src/core/auth-storage.js";
 import { getModel } from "../src/models.js";
 import {
@@ -117,9 +117,9 @@ function deterministicProbeTool(): Tool {
 	return {
 		name: "deterministic_probe",
 		description: "Mandatory benchmark tool. Call exactly once with the turn and marker from the user prompt.",
-		parameters: Type.Object({
-			turn: Type.Number(),
-			marker: Type.String(),
+		parameters: z.looseObject({
+			turn: z.number(),
+			marker: z.string(),
 		}),
 	};
 }

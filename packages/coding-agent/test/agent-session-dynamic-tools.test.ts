@@ -2,8 +2,8 @@ import { existsSync, mkdirSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { getModel } from "@earendil-works/pi-ai";
-import { Type } from "typebox";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { z } from "zod";
 import { DefaultResourceLoader } from "../src/core/resource-loader.js";
 import { createAgentSession } from "../src/core/sdk.js";
 import { SessionManager } from "../src/core/session-manager.js";
@@ -42,7 +42,7 @@ describe("AgentSession dynamic tool registration", () => {
 							description: "Tool registered from session_start",
 							promptSnippet: "Run dynamic test behavior",
 							promptGuidelines: ["Use dynamic_tool when the user asks for dynamic behavior tests."],
-							parameters: Type.Object({}),
+							parameters: z.looseObject({}),
 							execute: async () => ({
 								content: [{ type: "text", text: "ok" }],
 								details: {},
@@ -113,7 +113,7 @@ describe("AgentSession dynamic tool registration", () => {
 					name: "sdk_tool",
 					label: "SDK Tool",
 					description: "Tool registered through createAgentSession",
-					parameters: Type.Object({}),
+					parameters: z.looseObject({}),
 					execute: async () => ({
 						content: [{ type: "text", text: "ok" }],
 						details: {},
@@ -149,7 +149,7 @@ describe("AgentSession dynamic tool registration", () => {
 							name: "hidden_tool",
 							label: "Hidden Tool",
 							description: "Description should not appear in available tools",
-							parameters: Type.Object({}),
+							parameters: z.looseObject({}),
 							execute: async () => ({
 								content: [{ type: "text", text: "ok" }],
 								details: {},

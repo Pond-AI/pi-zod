@@ -1,5 +1,5 @@
-import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 import { getModel } from "../src/models.js";
 import { stream } from "../src/stream.js";
 import type { Context, Tool } from "../src/types.js";
@@ -32,8 +32,8 @@ describe.skipIf(!oauthToken)("Anthropic OAuth tool name normalization", () => {
 		const todoTool: Tool = {
 			name: "todowrite",
 			description: "Write a todo item",
-			parameters: Type.Object({
-				task: Type.String({ description: "The task to add" }),
+			parameters: z.looseObject({
+				task: z.string().describe("The task to add"),
 			}),
 		};
 
@@ -73,8 +73,8 @@ describe.skipIf(!oauthToken)("Anthropic OAuth tool name normalization", () => {
 		const readTool: Tool = {
 			name: "read",
 			description: "Read a file",
-			parameters: Type.Object({
-				path: Type.String({ description: "File path" }),
+			parameters: z.looseObject({
+				path: z.string().describe("File path"),
 			}),
 		};
 
@@ -116,8 +116,8 @@ describe.skipIf(!oauthToken)("Anthropic OAuth tool name normalization", () => {
 		const findTool: Tool = {
 			name: "find",
 			description: "Find files by pattern",
-			parameters: Type.Object({
-				pattern: Type.String({ description: "Glob pattern" }),
+			parameters: z.looseObject({
+				pattern: z.string().describe("Glob pattern"),
 			}),
 		};
 
@@ -167,8 +167,8 @@ describe.skipIf(!oauthToken)("Anthropic OAuth tool name normalization", () => {
 		const customTool: Tool = {
 			name: "my_custom_tool",
 			description: "A custom tool",
-			parameters: Type.Object({
-				input: Type.String({ description: "Input value" }),
+			parameters: z.looseObject({
+				input: z.string().describe("Input value"),
 			}),
 		};
 

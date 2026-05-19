@@ -1,5 +1,5 @@
-import { Type } from "typebox";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { z } from "zod";
 import { getModel } from "../src/models.js";
 import { streamSimple } from "../src/stream.js";
 import type { Tool } from "../src/types.js";
@@ -76,8 +76,8 @@ describe("openai-completions tool_choice", () => {
 			{
 				name: "ping",
 				description: "Ping tool",
-				parameters: Type.Object({
-					ok: Type.Boolean(),
+				parameters: z.looseObject({
+					ok: z.boolean(),
 				}),
 			},
 		];
@@ -121,8 +121,8 @@ describe("openai-completions tool_choice", () => {
 			{
 				name: "ping",
 				description: "Ping tool",
-				parameters: Type.Object({
-					ok: Type.Boolean(),
+				parameters: z.looseObject({
+					ok: z.boolean(),
 				}),
 			},
 		];
@@ -217,8 +217,8 @@ describe("openai-completions tool_choice", () => {
 			{
 				name: "ping",
 				description: "Ping tool",
-				parameters: Type.Object({
-					ok: Type.Boolean(),
+				parameters: z.looseObject({
+					ok: z.boolean(),
 				}),
 			},
 		];
@@ -262,8 +262,8 @@ describe("openai-completions tool_choice", () => {
 			{
 				name: "ping",
 				description: "Ping tool",
-				parameters: Type.Object({
-					ok: Type.Boolean(),
+				parameters: z.looseObject({
+					ok: z.boolean(),
 				}),
 			},
 		];
@@ -306,8 +306,8 @@ describe("openai-completions tool_choice", () => {
 			{
 				name: "ping",
 				description: "Ping tool",
-				parameters: Type.Object({
-					ok: Type.Boolean(),
+				parameters: z.looseObject({
+					ok: z.boolean(),
 				}),
 			},
 		];
@@ -510,8 +510,8 @@ describe("openai-completions tool_choice", () => {
 		const tool: Tool = {
 			name: "read",
 			description: "Read a file",
-			parameters: Type.Object({
-				path: Type.String(),
+			parameters: z.looseObject({
+				path: z.string(),
 			}),
 		};
 		const s = streamSimple(
@@ -658,22 +658,22 @@ describe("openai-completions tool_choice", () => {
 			{
 				name: "read",
 				description: "Read a file",
-				parameters: Type.Object({ path: Type.String() }),
+				parameters: z.looseObject({ path: z.string() }),
 			},
 			{
 				name: "grep",
 				description: "Search a file",
-				parameters: Type.Object({ pattern: Type.String(), path: Type.String() }),
+				parameters: z.looseObject({ pattern: z.string(), path: z.string() }),
 			},
 			{
 				name: "list",
 				description: "List a directory",
-				parameters: Type.Object({ path: Type.String() }),
+				parameters: z.looseObject({ path: z.string() }),
 			},
 			{
 				name: "write",
 				description: "Write a file",
-				parameters: Type.Object({ path: Type.String(), content: Type.String() }),
+				parameters: z.looseObject({ path: z.string(), content: z.string() }),
 			},
 		];
 		const s = streamSimple(

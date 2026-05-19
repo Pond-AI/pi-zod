@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Breaking Changes
+
+- Migrated built-in and extension tool parameter schemas from TypeBox to Zod. Extensions should define tool parameters with Zod schemas; pi still validates tool arguments before execution and passes provider-facing JSON Schema generated from those Zod schemas.
+
 ### Added
 
 - Added Together AI to built-in provider setup, `/login` API-key auth, and default model resolution ([#3624](https://github.com/earendil-works/pi-mono/pull/3624) by [@Nutlope](https://github.com/Nutlope)).

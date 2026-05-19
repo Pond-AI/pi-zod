@@ -322,9 +322,9 @@ export interface AssistantImages {
 	timestamp: number; // Unix timestamp in milliseconds
 }
 
-import type { TSchema } from "typebox";
+import type { ZodType } from "zod";
 
-export interface Tool<TParameters extends TSchema = TSchema> {
+export interface Tool<TParameters extends ZodType = ZodType> {
 	name: string;
 	description: string;
 	parameters: TParameters;

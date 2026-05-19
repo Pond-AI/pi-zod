@@ -1,8 +1,8 @@
 import { join, resolve } from "node:path";
 import { Text, type TUI } from "@earendil-works/pi-tui";
 import stripAnsi from "strip-ansi";
-import { Type } from "typebox";
 import { beforeAll, describe, expect, test } from "vitest";
+import { z } from "zod";
 import { getReadmePath } from "../src/config.js";
 import type { ToolDefinition } from "../src/core/extensions/types.js";
 import { type BashOperations, createBashToolDefinition } from "../src/core/tools/bash.js";
@@ -16,7 +16,7 @@ function createBaseToolDefinition(name = "custom_tool"): ToolDefinition {
 		name,
 		label: name,
 		description: "custom tool",
-		parameters: Type.Any(),
+		parameters: z.any(),
 		execute: async () => ({
 			content: [{ type: "text", text: "ok" }],
 			details: {},

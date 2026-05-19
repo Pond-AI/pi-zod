@@ -31,6 +31,7 @@ import { AssistantMessageEventStream } from "../utils/event-stream.js";
 import { headersToRecord } from "../utils/headers.js";
 import { parseJsonWithRepair, parseStreamingJson } from "../utils/json-parse.js";
 import { sanitizeSurrogates } from "../utils/sanitize-unicode.js";
+import { toolParametersToJsonSchema } from "../utils/tool-schema.js";
 
 import { resolveCloudflareBaseUrl } from "./cloudflare.js";
 import { buildCopilotDynamicHeaders, hasCopilotVisionInput } from "./github-copilot-headers.js";
@@ -1167,21 +1168,13 @@ function convertTools(
 ): Anthropic.Messages.Tool[] {
 	if (!tools) return [];
 
-	return tools.map((tool, index) => {
-		const schema = tool.parameters as { properties?: unknown; required?: string[] };
-
-		return {
-			name: isOAuthToken ? toClaudeCodeName(tool.name) : tool.name,
-			description: tool.description,
-			...(supportsEagerToolInputStreaming ? { eager_input_streaming: true } : {}),
-			input_schema: {
-				type: "object",
-				properties: schema.properties ?? {},
-				required: schema.required ?? [],
-			},
-			...(cacheControl && index === tools.length - 1 ? { cache_control: cacheControl } : {}),
-		};
-	});
+	return tools.map((tool, index) => ({
+		name: isOAuthToken ? toClaudeCodeName(tool.name) : tool.name,
+		description: tool.description,
+		...(supportsEagerToolInputStreaming ? { eager_input_streaming: true } : {}),
+		input_schema: toolParametersToJsonSchema(tool.parameters) as Anthropic.Messages.Tool.InputSchema,
+		...(cacheControl && index === tools.length - 1 ? { cache_control: cacheControl } : {}),
+	}));
 }
 
 function mapStopReason(reason: Anthropic.Messages.StopReason | string): StopReason {

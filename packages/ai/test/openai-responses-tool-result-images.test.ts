@@ -2,8 +2,8 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { ResponseFunctionCallOutputItemList } from "openai/resources/responses/responses.js";
-import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 import type { Api, Context, Model, StreamOptions, Tool, ToolResultMessage } from "../src/index.js";
 import { complete, getModel } from "../src/index.js";
 import { hasAzureOpenAICredentials, resolveAzureDeploymentName } from "./azure-utils.js";
@@ -17,7 +17,7 @@ const __dirname = dirname(__filename);
 const oauthTokens = await Promise.all([resolveApiKey("github-copilot"), resolveApiKey("openai-codex")]);
 const [githubCopilotToken, openaiCodexToken] = oauthTokens;
 
-const getImageSchema = Type.Object({});
+const getImageSchema = z.looseObject({});
 const getImageTool: Tool<typeof getImageSchema> = {
 	name: "get_circle_with_description",
 	description: "Returns a red circle image with a short text description.",

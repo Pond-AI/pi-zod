@@ -19,8 +19,8 @@ import {
 	getModel,
 	type Model,
 	type SimpleStreamOptions,
-	Type,
 } from "@earendil-works/pi-ai";
+import { z } from "zod";
 import {
 	getOpenAICodexWebSocketDebugStats,
 	streamSimpleOpenAICodexResponses,
@@ -240,9 +240,9 @@ function getAssistantText(message: AssistantMessage): string {
 		.trim();
 }
 
-const deterministicProbeParameters = Type.Object({
-	turn: Type.Number({ description: "Top-level benchmark turn number" }),
-	marker: Type.String({ description: "Marker string provided by the user" }),
+const deterministicProbeParameters = z.looseObject({
+	turn: z.number().describe("Top-level benchmark turn number"),
+	marker: z.string().describe("Marker string provided by the user"),
 });
 
 function deterministicProbeTool(): ToolDefinition<typeof deterministicProbeParameters> {

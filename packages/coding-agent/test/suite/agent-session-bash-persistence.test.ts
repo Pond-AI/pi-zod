@@ -1,8 +1,8 @@
 import { Buffer } from "node:buffer";
 import type { AgentTool } from "@earendil-works/pi-agent-core";
 import { fauxAssistantMessage, fauxToolCall } from "@earendil-works/pi-ai";
-import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
+import { z } from "zod";
 import type { BashOperations } from "../../src/core/tools/bash.js";
 import { createHarness, type Harness } from "./harness.js";
 
@@ -44,7 +44,7 @@ describe("AgentSession bash and persistence characterization", () => {
 			name: "wait",
 			label: "Wait",
 			description: "Wait for release",
-			parameters: Type.Object({}),
+			parameters: z.looseObject({}),
 			execute: async () => {
 				await toolRelease;
 				return {
@@ -137,7 +137,7 @@ describe("AgentSession bash and persistence characterization", () => {
 			name: "echo",
 			label: "Echo",
 			description: "Echo text back",
-			parameters: Type.Object({ text: Type.String() }),
+			parameters: z.looseObject({ text: z.string() }),
 			execute: async (_toolCallId, params) => {
 				const text = typeof params === "object" && params !== null && "text" in params ? String(params.text) : "";
 				return { content: [{ type: "text", text: `echo:${text}` }], details: { text } };

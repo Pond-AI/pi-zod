@@ -23,8 +23,8 @@
  */
 
 import { writeFileSync } from "fs";
-import { Type } from "typebox";
 import { beforeAll, describe, expect, it } from "vitest";
+import { z } from "zod";
 import { getModel } from "../src/models.js";
 import { completeSimple, getEnvApiKey } from "../src/stream.js";
 import type { Api, AssistantMessage, Message, Model, Tool, ToolResultMessage } from "../src/types.js";
@@ -33,8 +33,8 @@ import { hasCloudflareAiGatewayCredentials, hasCloudflareWorkersAICredentials } 
 import { resolveApiKey } from "./oauth.js";
 
 // Simple tool for testing
-const testToolSchema = Type.Object({
-	value: Type.Number({ description: "A number to double" }),
+const testToolSchema = z.looseObject({
+	value: z.number().describe("A number to double"),
 });
 
 const testTool: Tool<typeof testToolSchema> = {

@@ -5,8 +5,8 @@
 
 import type { AgentTool } from "@earendil-works/pi-agent-core";
 import type { AssistantMessage } from "@earendil-works/pi-ai";
-import { Type } from "typebox";
 import { afterEach, describe, expect, it } from "vitest";
+import { z } from "zod";
 import { createHarness, createHarnessWithExtensions, type Harness } from "./test-harness.js";
 
 describe("test harness", () => {
@@ -53,7 +53,7 @@ describe("test harness", () => {
 			name: "echo",
 			label: "Echo",
 			description: "Echo back",
-			parameters: Type.Object({ text: Type.String() }),
+			parameters: z.looseObject({ text: z.string() }),
 			execute: async () => {
 				toolExecuted = true;
 				return { content: [{ type: "text", text: "echoed" }], details: {} };
@@ -199,7 +199,7 @@ describe("test harness", () => {
 			name: "echo",
 			label: "Echo",
 			description: "Echo back",
-			parameters: Type.Object({ text: Type.String() }),
+			parameters: z.looseObject({ text: z.string() }),
 			execute: async () => ({ content: [{ type: "text", text: "echoed" }], details: {} }),
 		};
 
@@ -226,7 +226,7 @@ describe("test harness", () => {
 			name: "echo",
 			label: "Echo",
 			description: "Echo back",
-			parameters: Type.Object({ text: Type.String() }),
+			parameters: z.looseObject({ text: z.string() }),
 			execute: async () => ({ content: [{ type: "text", text: "echoed" }], details: {} }),
 		};
 

@@ -501,12 +501,12 @@ Content`,
 				join(ext1Dir, "index.ts"),
 				`
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { Type } from "typebox";
+import { z } from "zod";
 export default function(pi: ExtensionAPI) {
   pi.registerTool({
     name: "duplicate-tool",
     description: "First",
-    parameters: Type.Object({}),
+    parameters: z.looseObject({}),
     execute: async () => ({ result: "1" }),
   });
 }`,
@@ -516,12 +516,12 @@ export default function(pi: ExtensionAPI) {
 				join(ext2Dir, "index.ts"),
 				`
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { Type } from "typebox";
+import { z } from "zod";
 export default function(pi: ExtensionAPI) {
   pi.registerTool({
     name: "duplicate-tool",
     description: "Second",
-    parameters: Type.Object({}),
+    parameters: z.looseObject({}),
     execute: async () => ({ result: "2" }),
   });
 }`,
@@ -543,12 +543,12 @@ export default function(pi: ExtensionAPI) {
 				join(globalExtDir, "global.ts"),
 				`
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { Type } from "typebox";
+import { z } from "zod";
 export default function(pi: ExtensionAPI) {
   pi.registerTool({
     name: "duplicate-tool",
     description: "global tool",
-    parameters: Type.Object({}),
+    parameters: z.looseObject({}),
     execute: async () => ({ result: "global" }),
   });
   pi.registerCommand("deploy", {
@@ -562,12 +562,12 @@ export default function(pi: ExtensionAPI) {
 				explicitExtPath,
 				`
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { Type } from "typebox";
+import { z } from "zod";
 export default function(pi: ExtensionAPI) {
   pi.registerTool({
     name: "duplicate-tool",
     description: "explicit tool",
-    parameters: Type.Object({}),
+    parameters: z.looseObject({}),
     execute: async () => ({ result: "explicit" }),
   });
   pi.registerCommand("deploy", {

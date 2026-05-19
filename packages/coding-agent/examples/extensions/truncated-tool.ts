@@ -28,12 +28,12 @@ import { Text } from "@earendil-works/pi-tui";
 import { execSync } from "child_process";
 import { tmpdir } from "os";
 import { join } from "path";
-import { Type } from "typebox";
+import { z } from "zod";
 
-const RgParams = Type.Object({
-	pattern: Type.String({ description: "Search pattern (regex)" }),
-	path: Type.Optional(Type.String({ description: "Directory to search (default: current directory)" })),
-	glob: Type.Optional(Type.String({ description: "File glob pattern, e.g. '*.ts'" })),
+const RgParams = z.looseObject({
+	pattern: z.string().describe("Search pattern (regex)"),
+	path: z.optional(z.string().describe("Directory to search (default: current directory)")),
+	glob: z.optional(z.string().describe("File glob pattern, e.g. '*.ts'")),
 });
 
 interface RgDetails {
