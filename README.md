@@ -15,7 +15,7 @@
 > New issues and PRs from new contributors are auto-closed by default. Maintainers review auto-closed issues daily. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
-**This is a fork of Pi Agent that uses [zod]() instead of [typebox]() for schema passing and validation**
+**This is a fork of Pi Agent that uses zod instead of typebox for schema passing and validation**
 
 ## fork maintenance
 
