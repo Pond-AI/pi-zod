@@ -4,12 +4,12 @@
     "noEmit": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "paths": {
-      "@earendil-works/pi-agent-core": ["../agent/src/index.ts"],
-      "@earendil-works/pi-agent-core/*": ["../agent/src/*"],
-      "@earendil-works/pi-ai": ["../ai/src/index.ts"],
-      "@earendil-works/pi-ai/*": ["../ai/src/*", "../ai/src/providers/*"],
-      "@earendil-works/pi-tui": ["../tui/src/index.ts"],
-      "@earendil-works/pi-tui/*": ["../tui/src/*"]
+      "@pond-ai/pi-agent-core": ["../agent/src/index.ts"],
+      "@pond-ai/pi-agent-core/*": ["../agent/src/*"],
+      "@pond-ai/pi-ai": ["../ai/src/index.ts"],
+      "@pond-ai/pi-ai/*": ["../ai/src/*", "../ai/src/providers/*"],
+      "@pond-ai/pi-tui": ["../tui/src/index.ts"],
+      "@pond-ai/pi-tui/*": ["../tui/src/*"]
     }
   },
   "include": ["src/**/*"]

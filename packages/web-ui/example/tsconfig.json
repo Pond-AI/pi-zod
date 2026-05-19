@@ -6,11 +6,11 @@
 		"moduleResolution": "bundler",
 		"paths": {
 			"*": ["./*"],
-			"@earendil-works/pi-agent-core": ["../../agent/src/index.ts"],
-			"@earendil-works/pi-ai": ["../../ai/src/index.ts"],
-			"@earendil-works/pi-ai/*": ["../../ai/src/*", "../../ai/src/providers/*"],
-			"@earendil-works/pi-tui": ["../../tui/src/index.ts"],
-			"@earendil-works/pi-web-ui": ["../src/index.ts"]
+			"@pond-ai/pi-agent-core": ["../../agent/src/index.ts"],
+			"@pond-ai/pi-ai": ["../../ai/src/index.ts"],
+			"@pond-ai/pi-ai/*": ["../../ai/src/*", "../../ai/src/providers/*"],
+			"@pond-ai/pi-tui": ["../../tui/src/index.ts"],
+			"@pond-ai/pi-web-ui": ["../src/index.ts"]
 		},
 		"strict": true,
 		"skipLibCheck": true,

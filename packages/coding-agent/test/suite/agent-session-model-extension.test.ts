@@ -1,5 +1,5 @@
-import type { AgentTool, ThinkingLevel } from "@earendil-works/pi-agent-core";
-import { fauxAssistantMessage, fauxToolCall, type Model } from "@earendil-works/pi-ai";
+import type { AgentTool, ThinkingLevel } from "@pond-ai/pi-agent-core";
+import { fauxAssistantMessage, fauxToolCall, type Model } from "@pond-ai/pi-ai";
 import { afterEach, describe, expect, it } from "vitest";
 import { z } from "zod";
 import type { ExtensionAPI } from "../../src/index.js";

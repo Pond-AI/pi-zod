@@ -15,15 +15,8 @@
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, dirname, resolve } from "node:path";
-import type {
-	Agent,
-	AgentEvent,
-	AgentMessage,
-	AgentState,
-	AgentTool,
-	ThinkingLevel,
-} from "@earendil-works/pi-agent-core";
-import type { AssistantMessage, ImageContent, Message, Model, TextContent } from "@earendil-works/pi-ai";
+import type { Agent, AgentEvent, AgentMessage, AgentState, AgentTool, ThinkingLevel } from "@pond-ai/pi-agent-core";
+import type { AssistantMessage, ImageContent, Message, Model, TextContent } from "@pond-ai/pi-ai";
 import {
 	clampThinkingLevel,
 	cleanupSessionResources,
@@ -31,7 +24,7 @@ import {
 	isContextOverflow,
 	modelsAreEqual,
 	resetApiProviders,
-} from "@earendil-works/pi-ai";
+} from "@pond-ai/pi-ai";
 import { theme } from "../modes/interactive/theme/theme.js";
 import { stripFrontmatter } from "../utils/frontmatter.js";
 import { sleep } from "../utils/sleep.js";

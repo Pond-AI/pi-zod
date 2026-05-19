@@ -1,4 +1,4 @@
-import { setBedrockProviderModule } from "@earendil-works/pi-ai";
-import { bedrockProviderModule } from "@earendil-works/pi-ai/bedrock-provider";
+import { setBedrockProviderModule } from "@pond-ai/pi-ai";
+import { bedrockProviderModule } from "@pond-ai/pi-ai/bedrock-provider";
 
 setBedrockProviderModule(bedrockProviderModule);
