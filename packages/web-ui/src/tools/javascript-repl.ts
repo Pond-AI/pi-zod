@@ -1,6 +1,6 @@
+import { i18n } from "@mariozechner/mini-lit";
 import type { AgentTool } from "@pond-ai/pi-agent-core";
 import type { ToolResultMessage } from "@pond-ai/pi-ai";
-import { i18n } from "@mariozechner/mini-lit";
 import { html } from "lit";
 import { createRef, ref } from "lit/directives/ref.js";
 import { Code } from "lucide";

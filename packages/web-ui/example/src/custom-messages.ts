@@ -1,7 +1,7 @@
+import { Alert } from "@mariozechner/mini-lit/dist/Alert.js";
 import type { Message } from "@pond-ai/pi-ai";
 import type { AgentMessage, MessageRenderer } from "@pond-ai/pi-web-ui";
 import { defaultConvertToLlm, registerMessageRenderer } from "@pond-ai/pi-web-ui";
-import { Alert } from "@mariozechner/mini-lit/dist/Alert.js";
 import { html } from "lit";
 
 // ============================================================================

@@ -15,6 +15,12 @@
 > New issues and PRs from new contributors are auto-closed by default. Maintainers review auto-closed issues daily. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
+**This is a fork of Pi Agent that uses [zod]() instead of [typebox]() for schema passing and validation**
+
+## fork maintenance
+
+1. Obviously, the main change is that we replace places where we use typebox with zod instead. This is easy to maintain because typebox is not installed in this version of pi, so any references to typebox will cause typescript errors.
+2. In order to publish to NPM, we also had to rewrite all the packages from `@earendil-works/pi...` to `@pond-ai/pi...` in the code, package.jsons, and tsconfig. This is similarly easy to maintain as any references to `@earendil-works` will cause typescript errors.
 
 # Pi Agent Harness Mono Repo
 
